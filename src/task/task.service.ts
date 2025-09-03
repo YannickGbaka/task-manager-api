@@ -21,4 +21,13 @@ export class TaskService {
       );
     }
   }
+
+  async getTasks(): Promise<Task[] | undefined> {
+    try {
+      return await this.taskRepository.find({});
+    } catch (error) {
+      console.log(error.message);
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

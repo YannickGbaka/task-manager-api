@@ -7,6 +7,7 @@ import { CreateTaskDto } from './dtos/create-task.dto';
 import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateTaskDto } from './dtos/update-task.dto';
 
 @Injectable()
 export class TaskService {
@@ -42,6 +43,28 @@ export class TaskService {
         throw new NotFoundException();
       }
       return task;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        'something unexpected happened, please try later',
+      );
+    }
+  }
+
+  async updateTask(
+    id: number,
+    updateTaskDto: UpdateTaskDto,
+  ): Promise<Task | undefined> {
+    try {
+      const task = await this.taskRepository.findOneBy({ id });
+      if (!task) {
+        throw new NotFoundException('Task was not found');
+      }
+      task.title = updateTaskDto.title ?? task.title;
+      task.description = updateTaskDto.description ?? task.description;
+      task.status = updateTaskDto.status ?? task.status;
+
+      return await this.taskRepository.save(task);
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(

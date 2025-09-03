@@ -2,12 +2,15 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateTaskDto } from './dtos/update-task.dto';
+import { take } from 'rxjs';
 
 @Injectable()
 export class TaskService {
@@ -71,5 +74,13 @@ export class TaskService {
         'something unexpected happened, please try later',
       );
     }
+  }
+
+  async deleteTask(@Param('id', new ParseIntPipe()) id: number): Promise<void> {
+    const task = await this.taskRepository.findOneBy({ id });
+    if (!task) {
+      throw new NotFoundException('Task was not found');
+    }
+    await this.taskRepository.delete({ id });
   }
 }

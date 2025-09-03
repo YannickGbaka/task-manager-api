@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { TaskService } from './task.service';
 import { Task } from './task.entity';
@@ -15,5 +23,12 @@ export class TaskController {
   @Get()
   async getTasks(): Promise<Task[] | undefined> {
     return await this.taskService.getTasks();
+  }
+
+  @Get(':id')
+  async getTask(
+    @Param('id', new ParseIntPipe()) id: number,
+  ): Promise<Task | undefined> {
+    return await this.taskService.getTask(id);
   }
 }

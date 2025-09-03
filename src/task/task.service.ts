@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { Repository } from 'typeorm';
 import { Task } from './task.entity';
@@ -28,6 +32,21 @@ export class TaskService {
     } catch (error) {
       console.log(error.message);
       throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getTask(id: number): Promise<Task | undefined> {
+    try {
+      const task = await this.taskRepository.findOneBy({ id });
+      if (!task) {
+        throw new NotFoundException();
+      }
+      return task;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        'something unexpected happened, please try later',
+      );
     }
   }
 }

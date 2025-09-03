@@ -22,9 +22,11 @@ export class Task {
 
   @Column({
     type: 'enum',
-    enum: ['pending', 'on going', 'done'],
+    enum: ['pending', 'on_going', 'done'],
+    nullable: true,
+    default: 'pending',
   })
-  status: string;
+  status?: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -7,6 +7,6 @@ export default registerAs('database', () => ({
   name: process.env.DB_NAME ?? 'task_manager',
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  synchronize: process.env.DB_SYNC,
-  autoLoadEntities: process.env.DB_AUTO_LOAD,
+  synchronize: process.env.DB_SYNC == 'true' ? true : false,
+  autoLoadEntities: process.env.DB_AUTO_LOAD == 'true' ? true : false,
 }));

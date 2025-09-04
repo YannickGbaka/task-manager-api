@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -9,18 +10,22 @@ import {
 @Entity({ name: 'tasks' })
 export class Task {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
 
+  @ApiProperty()
   @Column({
     type: 'text',
   })
   title: string;
 
+  @ApiProperty()
   @Column({
     type: 'text',
   })
   description: string;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: ['pending', 'on_going', 'done'],
@@ -29,9 +34,11 @@ export class Task {
   })
   status?: string;
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
   updatedAt: Date;
 }

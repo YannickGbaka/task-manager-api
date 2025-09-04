@@ -40,18 +40,11 @@ export class TaskService {
   }
 
   async getTask(id: number): Promise<Task | undefined> {
-    try {
-      const task = await this.taskRepository.findOneBy({ id });
-      if (!task) {
-        throw new NotFoundException();
-      }
-      return task;
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException(
-        'something unexpected happened, please try later',
-      );
+    const task = await this.taskRepository.findOneBy({ id });
+    if (!task) {
+      throw new NotFoundException();
     }
+    return task;
   }
 
   async updateTask(

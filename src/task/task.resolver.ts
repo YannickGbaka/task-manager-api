@@ -7,12 +7,14 @@ export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 
   @Query(() => [Task])
-  async tasks() {
+  async tasks(): Promise<Task[] | undefined> {
     return await this.taskService.getTasks();
   }
 
   @Query(() => Task)
-  async task(@Args('id', { type: () => Int }) id: number) {
+  async task(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Task | undefined> {
     return await this.taskService.getTask(id);
   }
 }

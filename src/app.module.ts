@@ -7,11 +7,21 @@ import { Task } from './task/task.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig from './configs/app.config';
 import databaseConfig from './configs/database.config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 const envType = process.env.NODE_ENV || 'development';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      // playground: false,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      graphiql: true,
+    }),
+
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${envType}`,

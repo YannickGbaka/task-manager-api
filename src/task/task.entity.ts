@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
@@ -7,24 +8,29 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+@ObjectType()
 @Entity({ name: 'tasks' })
 export class Task {
   @PrimaryGeneratedColumn()
   @ApiProperty()
+  @Field(() => Number)
   id: number;
 
+  @Field()
   @ApiProperty()
   @Column({
     type: 'text',
   })
   title: string;
 
+  @Field()
   @ApiProperty()
   @Column({
     type: 'text',
   })
   description: string;
 
+  @Field({ nullable: true })
   @ApiProperty()
   @Column({
     type: 'enum',
@@ -34,6 +40,7 @@ export class Task {
   })
   status?: string;
 
+  @Field({ defaultValue: Date.now })
   @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;

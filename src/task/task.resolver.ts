@@ -51,4 +51,17 @@ export class TaskResolver {
   ): Promise<Task | undefined> {
     return await this.taskService.updateTask(id, updateTaskDto);
   }
+
+  @Mutation(() => Task)
+  async deleteTask(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Task | undefined> {
+    // First, get the task (to return it after deletion)
+    const task = await this.taskService.getTask(id);
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    await this.taskService.deleteTask(id);
+    return task;
+  }
 }

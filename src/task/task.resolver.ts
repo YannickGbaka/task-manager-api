@@ -2,6 +2,7 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Task } from './task.entity';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dtos/create-task.dto';
+import { UpdateTaskDto } from './dtos/update-task.dto';
 
 @Resolver(() => Task)
 export class TaskResolver {
@@ -21,7 +22,7 @@ export class TaskResolver {
 
   /**
    * To call this mutation in GraphiQL, use the following syntax:
-   * 
+   *
    * mutation {
    *   createTask(createTaskDto: {
    *     title: "My Task Title",
@@ -41,5 +42,13 @@ export class TaskResolver {
     @Args('createTaskDto') createTaskDto: CreateTaskDto,
   ): Promise<Task | undefined> {
     return await this.taskService.createTask(createTaskDto);
+  }
+
+  @Mutation(() => Task)
+  async updateTask(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('updateTaskDto') updateTaskDto: UpdateTaskDto,
+  ): Promise<Task | undefined> {
+    return await this.taskService.updateTask(id, updateTaskDto);
   }
 }

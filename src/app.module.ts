@@ -10,6 +10,8 @@ import databaseConfig from './configs/database.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 const envType = process.env.NODE_ENV || 'development';
 
@@ -42,6 +44,8 @@ const envType = process.env.NODE_ENV || 'development';
       }),
     }),
     TaskModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
